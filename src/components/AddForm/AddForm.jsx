@@ -3,58 +3,52 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setEventsList,
   setIsVisibleModal,
+  // setIsVisibleEventMenu,
 } from '../../store/slice';
 
-import timezones from '../../timezones.json';
+// import timezones from '../../timezones.json';
 
 const AddForm = () => {
   const dispatch = useDispatch();
   const { eventsList, isVisibleModal } = useSelector(state => state.events);
 
-  const [inputValue, setInputValue] = useState('');
-  const [selectValue, setSelectValue] = useState('Central Europen Time');
+  const [titleValue, setTitleValue] = useState('');
+  const [dateValue, setDateValue] = useState('');
 
   const addEvent = (event) => {
     event.preventDefault();
 
     const newEvent = {
       id: eventsList[eventsList.length - 1].id + 1,
-      title: inputValue,
-      time: selectValue,
+      title: titleValue,
+      time: dateValue,
       isPublished: false,
     };
 
     dispatch(setEventsList(newEvent));
-    setInputValue('');
+    setTitleValue('');
   };
 
   const closeModal = () => {
     dispatch(setIsVisibleModal(!isVisibleModal));
-    setInputValue('');
-    setSelectValue('Central Europen Time');
+    setTitleValue('');
+    setDateValue('Central Europen Time');
   };
 
   return (
     <form className="add-form" onSubmit={addEvent}>
       <input
         type="text"
-        value={inputValue}
-        onChange={event => setInputValue(event.target.value)}
+        value={titleValue}
+        onChange={event => setTitleValue(event.target.value)}
       />
-      <select
-        name="timezones"
-        id="timezones"
-        value={selectValue}
-        onChange={event => setSelectValue(event.target.value)}
-      >
-        {timezones.timezones.map(timezone => (
-          <option key={timezone.id} value={timezone.name}>
-            {timezone.name}
-          </option>
-        ))}
-      </select>
+      <input
+        type="datetime-local"
+        value={dateValue}
+        onChange={event => setDateValue(event.target.value)}
+      />
       <button type="submit">Add</button>
-      <button type="submit" onClick={closeModal}>
+      <button type="button" onClick={closeModal}>
         Close
       </button>
     </form>

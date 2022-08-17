@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setIsPublished,
   setIsVisibleModal,
+  setCurrentTimeZone,
 } from '../../store/slice';
 
-import './Categories.scss';
 import AddForm from '../AddForm/AddForm';
 import EventItem from '../EventItem/EventItem';
+
+import timezones from '../../timezones.json';
+import './Categories.scss';
 
 const Categories = () => {
   const dispatch = useDispatch();
@@ -15,11 +18,8 @@ const Categories = () => {
     isPublished,
     isVisibleModal,
     eventsList,
+    currentTimeZone,
   } = useSelector(state => state.events);
-
-  const openModal = () => {
-    dispatch(setIsVisibleModal(!isVisibleModal));
-  };
 
   const publishedList = eventsList
     .filter(event => event.isPublished === true);
@@ -48,6 +48,17 @@ const Categories = () => {
           </button>
         </li>
       </ul>
+      <select
+        className="categories__timezones"
+        value={currentTimeZone}
+        onChange={event => dispatch(setCurrentTimeZone(event.target.value))}
+      >
+        {timezones.timezones.map(zone => (
+          <option value={zone.value}>
+            {zone.name}
+          </option>
+        ))}
+      </select>
       <div className="categories__content">
         {isPublished
           ? publishedList.map(event => (
@@ -67,7 +78,10 @@ const Categories = () => {
         }
       </div>
       <div className="add">
-        <button type="button" onClick={openModal}>
+        <button
+          type="button"
+          onClick={() => dispatch(setIsVisibleModal(!isVisibleModal))}
+        >
           Add+
         </button>
         {isVisibleModal && (

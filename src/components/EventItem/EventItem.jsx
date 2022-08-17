@@ -1,19 +1,42 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsVisibleEventMenu } from '../../store/slice';
+import {
+  setIsVisibleEventMenu,
+  changeEventStatus,
+  deleteEvent,
+  setIsVisibleEditModal,
+} from '../../store/slice';
+import EditForm from '../EditForm/EditForm';
 
 import './EventItem.scss';
 
 const EventItem = ({ event }) => {
   const dispatch = useDispatch();
-  const isVisibleEventMenu = useSelector(state => (
-    state.events.isVisibleEventMenu));
+
+  const {
+    isVisibleEventMenu,
+    isVisibleEditModal,
+    currentTimeZone,
+  } = useSelector(state => state.events);
+
+  const handleEditButton = () => {
+    dispatch(setIsVisibleEditModal(!isVisibleEditModal));
+  };
+
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
   return (
     <>
       <div className="event__title">
         {event.title}
+      </div>
+      <div className="event__timezone">
+        {dayjs(event.time).tz(currentTimeZone).format('h:mm a - DD MMM YYYY')}
       </div>
       <button
         type="button"
@@ -29,12 +52,38 @@ const EventItem = ({ event }) => {
         }
         style={{ width: '200' }}
       >
-        <div className="event__edit">
+        <button
+          type="button"
+          className="event__edit"
+          onClick={handleEditButton}
+        >
+          edit
+        </button>
+        <button
+          type="button"
+          className="event__changeCategory"
+          onClick={() => {
+            dispatch(changeEventStatus(event.id));
+            dispatch(setIsVisibleEventMenu(event.id));
+          }}
+        >
           {event.isPublished ? 'unPublish' : 'Publish'}
-        </div>
-        <div className="event__changeCategory">change</div>
-        <div className="event__delete">delete</div>
+        </button>
+        <button
+          type="button"
+          className="event__delete"
+          onClick={() => dispatch(deleteEvent(event.id))}
+        >
+          delete
+        </button>
       </div>
+      {isVisibleEditModal
+        && isVisibleEventMenu === event.id
+        && (
+          <EditForm
+            id={event.id}
+          />
+        )}
     </>
   );
 };
