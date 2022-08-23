@@ -1,38 +1,112 @@
+@import '../../utils/mixins';
+
+
+.button {
+  width: 230px;
+  border: none;
+  outline: none;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .categories {
+  position: relative;
+  &__menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   &__list {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px 14px;
     list-style-type: none;
+    background: #E9E9E9;
+    border-radius: 18px;
+
+    @include onTablet {
+      flex-direction: row;
+      width: fit-content;
+      border-radius: 47px;
+      margin-bottom: 44px;
+    }
+  }
+  
+  &__item {
+    display: flex;
+    justify-content: center;
   }
 
   &__button {
-    background-color: #f9f9f9;
-    padding: 13px 30px;
-    border-radius: 30px;
-    margin-right: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
+    height: 46px;
+    background: rgb(233, 233, 233);
+    border-radius: 61px;
+
+    &--active {
+      background-color: rgb(66, 133, 244);
+      color: #fff;
+
+    }
 
     &:hover {
-      background-color: rgba(249, 249, 249, 0.5);
+      background-color: rgba(66, 133, 244, 0.5);
     }
 
-    &:active {
-      background-color: rgba(249, 249, 249, 0.7);
-    }
-
-    &.active {
-      background-color: #282828;
-      color: #fff;
+    @include onLaptop {
+      margin-right: 10px;
     }
   }
 }
 
-.eventItem__list {
-  list-style-type: none;
+.add {
+  &__button {
+    position: fixed;
+    left: 50%;
+    bottom: 15px;
+    transform: translateX(-50%);
+    height: 69px;
+    color: #fff;
+    background: rgb(74, 222, 128);
+    border-radius: 57px;
+
+    @include onTablet {
+      bottom: 0;
+    }
+
+    &:hover {
+      background-color: rgba(74, 222, 128, 0.5);
+    }
+
+    &:active {
+      background-color: rgba(74, 222, 128, 0.7);
+    }
+
+    @include onTablet {
+      position: relative;
+    }
+  }
 }
 
-.eventItem__item {
-  border: 1px solid black;
-  width: 200px;
+.eventItem {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  &__item {
+    position: relative;
+    padding: 13px 21px;
+    width: 100%;
+    background-color: #E9E9E9;
+    border-radius: 15px;
+
+    @include onTablet {
+      width: 280px;
+    }
+  }
 }

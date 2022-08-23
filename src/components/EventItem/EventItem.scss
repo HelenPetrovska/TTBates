@@ -1,5 +1,80 @@
-.event__menu {
-  display: none;
+.event {
+  &__title {
+    margin-bottom: 15px;
+    word-wrap: break-word;
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__button {
+    width: 15px;
+    height: 15px;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  &__timezone {
+    font-size: 16px;
+  }
+
+  &__menu {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    z-index: 5;
+    display: none;
+    width: 170px;
+  }
+}
+
+.buttonsGroup {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 13px;
+    background-color: transparent;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:first-child {
+      border: 2px solid #cecece;
+      border-bottom: none;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    &:not(:first-child, :last-child) {
+      border: 2px solid #cecece;
+      border-top: none;
+      border-bottom: none;
+    }
+
+    & img {
+      margin-right: 19px;
+    }
+
+    &--delete {
+      background-color: #ff4a4a;
+      color: #fff;
+      border: 2px solid #ff4a4a;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
 }
 
 .eventActive {

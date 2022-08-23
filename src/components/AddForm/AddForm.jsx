@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import {
   setEventsList,
   setIsVisibleModal,
-  // setIsVisibleEventMenu,
 } from '../../store/slice';
-
-// import timezones from '../../timezones.json';
 
 const AddForm = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,12 @@ const AddForm = () => {
 
   const [titleValue, setTitleValue] = useState('');
   const [dateValue, setDateValue] = useState('');
+
+  const closeModal = () => {
+    dispatch(setIsVisibleModal(!isVisibleModal));
+    setTitleValue('');
+    setDateValue('Central Europen Time');
+  };
 
   const addEvent = (event) => {
     event.preventDefault();
@@ -27,31 +34,49 @@ const AddForm = () => {
 
     dispatch(setEventsList(newEvent));
     setTitleValue('');
-  };
-
-  const closeModal = () => {
-    dispatch(setIsVisibleModal(!isVisibleModal));
-    setTitleValue('');
-    setDateValue('Central Europen Time');
+    closeModal();
   };
 
   return (
-    <form className="add-form" onSubmit={addEvent}>
-      <input
-        type="text"
-        value={titleValue}
-        onChange={event => setTitleValue(event.target.value)}
-      />
-      <input
-        type="datetime-local"
-        value={dateValue}
-        onChange={event => setDateValue(event.target.value)}
-      />
-      <button type="submit">Add</button>
-      <button type="button" onClick={closeModal}>
-        Close
-      </button>
-    </form>
+    <Modal
+      open={isVisibleModal}
+    >
+      <Box className="modal-box">
+        <form className="form" onSubmit={addEvent}>
+          <h3 className="form__title">
+            Add
+          </h3>
+          <TextField
+            id="filled-basic"
+            label="title"
+            variant="filled"
+            type="text"
+            value={titleValue}
+            onChange={event => setTitleValue(event.target.value)}
+          />
+          <TextField
+            id="filled-basic"
+            variant="filled"
+            type="datetime-local"
+            value={dateValue}
+            onChange={event => setDateValue(event.target.value)}
+          />
+          <Button
+            variant="contained"
+            type="submit"
+          >
+            Add
+          </Button>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={closeModal}
+          >
+            Close
+          </Button>
+        </form>
+      </Box>
+    </Modal>
   );
 };
 

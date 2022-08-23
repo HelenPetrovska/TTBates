@@ -33,18 +33,21 @@ const EventItem = ({ event }) => {
   return (
     <>
       <div className="event__title">
-        {event.title}
+        <span>{event.title}</span>
       </div>
-      <div className="event__timezone">
-        {dayjs(event.time).tz(currentTimeZone).format('h:mm a - DD MMM YYYY')}
+
+      <div className="event__bottom">
+        <button
+          type="button"
+          className="event__button"
+          onClick={() => dispatch(setIsVisibleEventMenu(event.id))}
+        >
+          ...
+        </button>
+        <div className="event__timezone">
+          {dayjs(event.time).tz(currentTimeZone).format('h:mm a - DD MMM YYYY')}
+        </div>
       </div>
-      <button
-        type="button"
-        className="event__button"
-        onClick={() => dispatch(setIsVisibleEventMenu(event.id))}
-      >
-        ...
-      </button>
       <div
         className={
           classNames('event__menu',
@@ -52,30 +55,35 @@ const EventItem = ({ event }) => {
         }
         style={{ width: '200' }}
       >
-        <button
-          type="button"
-          className="event__edit"
-          onClick={handleEditButton}
-        >
-          edit
-        </button>
-        <button
-          type="button"
-          className="event__changeCategory"
-          onClick={() => {
-            dispatch(changeEventStatus(event.id));
-            dispatch(setIsVisibleEventMenu(event.id));
-          }}
-        >
-          {event.isPublished ? 'unPublish' : 'Publish'}
-        </button>
-        <button
-          type="button"
-          className="event__delete"
-          onClick={() => dispatch(deleteEvent(event.id))}
-        >
-          delete
-        </button>
+        <div className="buttonsGroup">
+          <button
+            type="button"
+            className="buttonsGroup__btn"
+            onClick={handleEditButton}
+          >
+            <img src="images/edit-icon.png" alt="edit event" />
+            <span>Edit</span>
+          </button>
+          <button
+            type="button"
+            className="buttonsGroup__btn"
+            onClick={() => {
+              dispatch(changeEventStatus(event.id));
+              dispatch(setIsVisibleEventMenu(event.id));
+            }}
+          >
+            <img src="images/status-icon.png" alt="status event" />
+            <span>{event.isPublished ? 'unPublish' : 'Publish'}</span>
+          </button>
+          <button
+            type="button"
+            className="buttonsGroup__btn buttonsGroup__btn--delete"
+            onClick={() => dispatch(deleteEvent(event.id))}
+          >
+            <img src="images/delete-icon.png" alt="delete event" />
+            <span>Delete</span>
+          </button>
+        </div>
       </div>
       {isVisibleEditModal
         && isVisibleEventMenu === event.id

@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import {
   editEvent,
   setIsVisibleEditModal,
 } from '../../store/slice';
+
+import './EditForm.scss';
 
 const EditForm = ({ id }) => {
   const dispatch = useDispatch();
@@ -31,25 +37,48 @@ const EditForm = ({ id }) => {
   };
 
   return (
-    <form
-      className="add-form"
-      onSubmit={event => handleSubmit(event, id)}
+    <Modal
+      open={isVisibleEditModal}
     >
-      <input
-        type="text"
-        value={titleValue}
-        onChange={event => setTitleValue(event.target.value)}
-      />
-      <input
-        type="datetime-local"
-        value={dateValue}
-        onChange={event => setDateValue(event.target.value)}
-      />
-      <button type="submit">Edit</button>
-      <button type="button" onClick={closeModal}>
-        Close
-      </button>
-    </form>
+      <Box className="modal-box">
+        <form
+          className="form"
+          onSubmit={event => handleSubmit(event, id)}
+        >
+          <h3 className="form__title">
+            Edit
+          </h3>
+          <TextField
+            id="filled-basic"
+            label="title"
+            variant="filled"
+            type="text"
+            value={titleValue}
+            onChange={event => setTitleValue(event.target.value)}
+          />
+          <TextField
+            id="filled-basic"
+            variant="filled"
+            type="datetime-local"
+            value={dateValue}
+            onChange={event => setDateValue(event.target.value)}
+          />
+          <Button
+            variant="contained"
+            type="submit"
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={closeModal}
+          >
+            Close
+          </Button>
+        </form>
+      </Box>
+    </Modal>
   );
 };
 
